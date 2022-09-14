@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Survey;
 use Illuminate\Http\Request;
 use App\Services\SurveyResponseCalculator;
-use App\models\SurveyResponse;
+use App\Models\SurveyResponse;
 
 class SurveyResponseController extends Controller
 {
