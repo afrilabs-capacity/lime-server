@@ -94,7 +94,8 @@ class UserController extends Controller
 
     public function index()
     {
-        return User::paginate(5);
+
+        return User::where('id', '!=', auth()->user()->id)->paginate(5);
     }
 
 
@@ -118,5 +119,19 @@ class UserController extends Controller
         }
 
         return response()->json(['users' => User::paginate(20)], 200);
+    }
+
+    public function deleteUser($uuid)
+    {
+        $user = User::where('uuid', $uuid)->firstOrFail();
+
+        if ($user->roles()->first()) {
+            foreach ($user->roles()->get() as $role) {
+                $user->roles()->detach();
+                // return $role->name;
+            }
+        }
+        Activity::where('model', 'User')->where('model_uuid', $user->uuid)->delete();
+        $user->delete();
     }
 }

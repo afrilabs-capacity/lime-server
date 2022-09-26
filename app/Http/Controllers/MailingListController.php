@@ -14,7 +14,7 @@ class MailingListController extends Controller
 
     public function index()
     {
-        return MailingList::paginate(2);
+        return MailingList::paginate(10);
     }
 
     public function create(Request $request)

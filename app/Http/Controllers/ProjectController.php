@@ -30,6 +30,10 @@ class ProjectController extends Controller
             'name'    => 'required|string'
         ]);
 
+        if (Project::where('name', $request->name)->exists()) {
+            return response()->json(['duplicate' => []], 422);
+        }
+
 
         $list = Project::create($request->all());
 
@@ -59,7 +63,7 @@ class ProjectController extends Controller
 
     public function projectSurveys($projectuuid)
     {
-        $projectSurveys = Project::where('uuid', $projectuuid)->first()->surveys()->paginate(1);
+        $projectSurveys = Project::where('uuid', $projectuuid)->first()->surveys()->paginate(5);
         return response()->json(['project_surveys' => $projectSurveys], 200);
     }
 

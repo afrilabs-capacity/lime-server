@@ -6,12 +6,20 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\SurveyResponse;
 use Ramsey\Uuid\Uuid;
+use Carbon\Carbon;
 
 class Survey extends Model
 {
     use HasFactory;
 
-    protected $appends = ['responses', 'project_name', 'project_uuid', 'survey_users'];
+    protected $appends = ['responses', 'project_name', 'project_uuid', 'survey_users', 'has_started', 'has_ended', 'start_date_today', 'end_date_today'];
+    protected $casts = [
+        'location' => 'boolean',
+        'has_started' => 'boolean',
+        'has_ended' => 'boolean',
+        'start_date_today' => 'boolean',
+        'end_date_today' => 'boolean',
+    ];
     protected $fillable = [
         'uuid',
         'name',
@@ -19,8 +27,7 @@ class Survey extends Model
         'project_id',
         'start_date',
         'end_date',
-        'longitude',
-        'latitude',
+        'location',
         'pinned'
 
     ];
@@ -73,5 +80,26 @@ class Survey extends Model
     {
 
         return  $this->hasMany(SurveyResponse::class);
+    }
+
+    public function getHasStartedAttribute()
+    {
+        return Carbon::parse($this->start_date)->gt(Carbon::now()) ? false : true;
+    }
+
+    public function getHasEndedAttribute()
+    {
+        return Carbon::now()->gt(Carbon::parse($this->end_date));
+    }
+
+    public function getStartDateTodayAttribute()
+    {
+        return Carbon::now()->isSameDay(Carbon::parse($this->start_date));
+    }
+
+
+    public function getEndDateTodayAttribute()
+    {
+        return Carbon::now()->isSameDay(Carbon::parse($this->end_date));
     }
 }

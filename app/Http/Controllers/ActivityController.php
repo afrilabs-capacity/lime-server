@@ -11,6 +11,6 @@ class ActivityController extends Controller
 
     public function index()
     {
-        return Activity::paginate(8);
+        return Activity::latest()->paginate(8);
     }
 }

@@ -48,7 +48,7 @@ class SurveyInvite extends Notification
         return (new MailMessage)
             ->line('Hi')
             ->line('Please find the link to your health survey:')
-            ->action('Complete Survey', url('http://localhost:3000/survey/share/' . $this->data->survey_uuid))
+            ->action('Complete Survey', url('http://localhost:3000/survey/share/' . auth()->user()->id . "/" . $this->data->survey_uuid))
             ->line('Thank you for using our application!');
     }
 

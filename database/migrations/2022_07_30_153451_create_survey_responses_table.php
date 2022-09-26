@@ -18,6 +18,8 @@ class CreateSurveyResponsesTable extends Migration
             $table->string('uuid');
             $table->integer('collector_id')->nullable();
             $table->integer('survey_id');
+            $table->string('longitude')->nullable();
+            $table->string('latitude')->nullable();
             $table->json('data');
             $table->timestamps();
         });

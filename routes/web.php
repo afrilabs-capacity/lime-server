@@ -27,6 +27,7 @@ Route::get('/', function () {
     // $collectorRole = Role::findOrFail(2);
     // $collector->assignRole($collectorRole);
 
-    return App\Services\SurveyResponseCalculator::calculate(\App\Models\SurveyResponse::get());
+
+    return App\Services\SurveyResponseCalculator::calculate(\App\Models\SurveyResponse::where('survey_id', 3)->get());
     return view('welcome');
 });

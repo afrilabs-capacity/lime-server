@@ -17,7 +17,11 @@ class SurveyController extends Controller
     //
     public function index(Request $request)
     {
-        return response()->json(['surveys' => Survey::latest()->paginate(10)]);
+        if (auth()->user()->isAdmin()) {
+            return response()->json(['surveys' => Survey::latest()->paginate(2)]);
+        } elseif (auth()->user()->isCollector()) {
+            return response()->json(['surveys' => auth()->user()->surveys()->paginate(1)]);
+        }
     }
 
     public function create(Request $request)
@@ -30,6 +34,10 @@ class SurveyController extends Controller
 
         if ($request->project_uuid !== null) {
             $project = Project::where('uuid', $request->project_uuid)->firstOrFail();
+
+            if (Survey::where('name', $request->name)->where('project_id', $project->id)->exists()) {
+                return response()->json(['duplicate' => []], 422);
+            }
             $survey = Survey::create(array_merge($request->except(['project_uuid']), [
                 'project_id' => $project->id
             ]));
@@ -72,10 +80,13 @@ class SurveyController extends Controller
 
     public function updateSurvey(Request $request)
     {
+        // return $request->all();
 
-        if ($request->project_uuid !== null) {
+        if ($request->projectuuid !== null) {
+            $startDate = Carbon::createFromFormat('m/d/Y', Carbon::parse($request->start_date)->format('m/d/Y'));
+            $endDate = Carbon::createFromFormat('m/d/Y', Carbon::parse($request->end_date)->format('m/d/Y'));
             $project = Project::where('uuid', $request->projectuuid)->firstOrFail();
-            Survey::where('uuid', $request->surveyuuid)->where('project_id', $project->id)->update(['data' => $request->data]);
+            Survey::where('uuid', $request->surveyuuid)->where('project_id', $project->id)->update(['data' => $request->data, 'start_date' =>  $startDate, 'end_date' =>  $endDate, 'location' => $request->location]);
         } else {
             Survey::where('uuid', $request->surveyuuid)->update(['data' => $request->data]);
         }

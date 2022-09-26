@@ -3,7 +3,10 @@
 namespace App\Services;
 
 use App\Models\SurveyResponse;
+use Hamcrest\Arrays\IsArray;
 use Illuminate\Database\Eloquent\Collection;
+use App\Models\Survey;
+use App\Services\Helpers;
 
 class SurveyResponseCalculator
 {
@@ -16,7 +19,16 @@ class SurveyResponseCalculator
             $result = [];
 
             $datas = json_decode($surveyResponse->data, true);
+            $rawSurveyData = Survey::where('id', 3)->firstOrFail();
+            $rawSurveyDataDecoded = json_decode($rawSurveyData->data, true);
 
+
+            //CHECK FOR CONSISTENCY WITH ORIGINAL SURVEY DATA
+            // $datas = Helpers::resolveSurveyLabelInconsistencies($rawSurveyDataDecoded, $datas);
+            // $datas = Helpers::removeWidgetFromResponseIfNotInSurvey($rawSurveyDataDecoded, $datas);
+            // $datas = Helpers::addWidgetToResponseIfInSurvey($rawSurveyDataDecoded, $datas);
+
+            //LOOP SURVEY WIDGETS
             foreach ($datas as $data) {
 
                 $analytics = [];
@@ -25,6 +37,13 @@ class SurveyResponseCalculator
                     ($data['name'] == "radio"  || $data['name'] == "dropdown" || $data['name'] == "checkbox")
                 ) {
                     // print "<h1>" . $data['label'] . "</h1>" . "</n>";
+                    if (!array_key_exists('data', $data)) {
+                        continue;
+                    }
+
+                    // if (count($data['data']) == 0) {
+                    //     continue;
+                    // }
 
                     if ($data['name'] == "checkbox") {
                         $analytics['label'] = strip_tags($data['label']);

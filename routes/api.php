@@ -33,10 +33,10 @@ Route::post('/survey/clone', [SurveyController::class, 'cloneSurvey']);
 Route::get('/survey/{uuid}', [SurveyController::class, 'singleSurvey']);
 Route::post('/survey/update', [SurveyController::class, 'updateSurvey']);
 Route::delete('/survey/delete/{surveyuuid}', [SurveyController::class, 'deleteSurvey']);
-Route::get('/surveys', [SurveyController::class, 'index']);
+Route::get('/surveys', [SurveyController::class, 'index'])->middleware('auth:sanctum');
 Route::get('/surveys/detached/project/{uuid}', [SurveyController::class, 'detachedSurveys']);
 Route::get('/surveys/detached/survey/{uuid}/users', [SurveyController::class, 'detachedUsers']);
-Route::post('/survey/distribute', [SurveyController::class, 'distribute']);
+Route::post('/survey/distribute', [SurveyController::class, 'distribute'])->middleware('auth:sanctum');
 Route::post('/survey/attach/user', [SurveyController::class, 'attachUser']);
 Route::post('/survey/detach/user', [SurveyController::class, 'detachUser']);
 Route::get('/survey/{surveyuuid}/users', [SurveyController::class, 'surveyUsers']);
@@ -45,8 +45,9 @@ Route::post('/survey/report', [SurveyController::class, 'getSurveyByDate']);
 
 /*Responses*/
 Route::get('/survey/responses/{uuid}', [SurveyResponseController::class, 'singleSurveyResponses']);
-Route::post('/survey/response', [SurveyResponseController::class, 'create']);
-Route::get('/survey/responses', [SurveyResponseController::class, 'index']);
+Route::post('/survey/response/web', [SurveyResponseController::class, 'create']);
+Route::post('/survey/response/user', [SurveyResponseController::class, 'createByUser'])->middleware('auth:sanctum');
+Route::get('/survey/responses', [SurveyResponseController::class, 'index'])->middleware('auth:sanctum');
 
 /*Email List*/
 Route::post('/emaill-list/import', [MailingListContactController::class, 'importEmailList']);
@@ -75,9 +76,10 @@ Route::post('/project/detach/user', [ProjectController::class, 'detachUser']);
 Route::get('/project/{projectuuid}/users', [ProjectController::class, 'projectUsers']);
 
 Route::post('/user/create', [UserController::class, 'create']);
-Route::get('/users', [UserController::class, 'index']);
-Route::get('/user/{uuid}', [UserController::class, 'singleUser']);
-Route::post('/user/update', [UserController::class, 'updateUser']);
+Route::get('/users', [UserController::class, 'index'])->middleware('auth:sanctum');
+Route::get('/user/{uuid}', [UserController::class, 'singleUser'])->middleware('auth:sanctum');
+Route::post('/user/update', [UserController::class, 'updateUser'])->middleware('auth:sanctum');
+Route::delete('/user/delete/{uuid}', [UserController::class, 'deleteUser']);
 Route::get('/users/detached/project/{uuid}', [UserController::class, 'detachedUsers']);
 
 

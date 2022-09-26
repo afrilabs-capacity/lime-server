@@ -21,9 +21,8 @@ class CreateSurveysTable extends Migration
             $table->integer('project_id')->nullable();
             $table->dateTime('start_date')->nullable();
             $table->dateTime('end_date')->nullable();
-            $table->string('longitude')->nullable();
-            $table->string('latitude')->nullable();
             $table->boolean('pinned')->default(false);
+            $table->boolean('location')->default(false);
             $table->timestamps();
         });
     }
