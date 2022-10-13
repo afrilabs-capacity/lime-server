@@ -38,6 +38,7 @@ class SurveyResponse extends Model
 
         try {
             //code...
+            Log::critical("Survey Response Model @ getDataAttribute" . $this->survey_id);
             $datas = json_decode($data, true);
             $rawSurveyData = Survey::where('id', $this->survey_id)->firstOrFail();
             $rawSurveyDataDecoded = json_decode($rawSurveyData->data, true);
