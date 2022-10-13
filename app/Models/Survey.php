@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\SurveyResponse;
 use Ramsey\Uuid\Uuid;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 
 class Survey extends Model
 {
