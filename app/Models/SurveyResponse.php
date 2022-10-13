@@ -39,7 +39,7 @@ class SurveyResponse extends Model
         try {
             //code...
             $datas = json_decode($data, true);
-            $rawSurveyData = Survey::where('id', 3)->firstOrFail();
+            $rawSurveyData = Survey::where('id', $this->survey_id)->firstOrFail();
             $rawSurveyDataDecoded = json_decode($rawSurveyData->data, true);
             $datas = Helpers::resolveSurveyLabelInconsistencies($rawSurveyDataDecoded, $datas);
             $datas = Helpers::removeWidgetFromResponseIfNotInSurvey($rawSurveyDataDecoded, $datas);
