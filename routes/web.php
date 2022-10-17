@@ -28,6 +28,6 @@ Route::get('/', function () {
     // $collector->assignRole($collectorRole);
 
 
-    return App\Services\SurveyResponseCalculator::calculate(\App\Models\SurveyResponse::where('survey_id', 3)->get());
+    return App\Services\SurveyResponseCalculator::calculate(\App\Models\SurveyResponse::where('survey_id', 8)->get());
     return view('welcome');
 });

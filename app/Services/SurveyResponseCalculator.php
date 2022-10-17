@@ -19,10 +19,8 @@ class SurveyResponseCalculator
             $result = [];
 
             $datas = json_decode($surveyResponse->data, true);
-            $rawSurveyData = Survey::where('id', 3)->firstOrFail();
-            $rawSurveyDataDecoded = json_decode($rawSurveyData->data, true);
-
-
+            // $rawSurveyData = Survey::where('id', 3)->firstOrFail();
+            // $rawSurveyDataDecoded = json_decode($rawSurveyData->data, true);
             //CHECK FOR CONSISTENCY WITH ORIGINAL SURVEY DATA
             // $datas = Helpers::resolveSurveyLabelInconsistencies($rawSurveyDataDecoded, $datas);
             // $datas = Helpers::removeWidgetFromResponseIfNotInSurvey($rawSurveyDataDecoded, $datas);

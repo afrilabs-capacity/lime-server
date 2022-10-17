@@ -63,6 +63,8 @@ class SurveyResponseController extends Controller
 
     public function singleSurveyResponses(Request $request, $uuid)
     {
+
+
         $survey = Survey::where('uuid', $uuid)->firstOrFail();
         $analytics = SurveyResponseCalculator::calculate(SurveyResponse::where('survey_id', $survey->id)->get());
         return response()->json(['responses' => SurveyResponse::where('survey_id', $survey->id)->paginate(10), 'analytics' => $analytics]);

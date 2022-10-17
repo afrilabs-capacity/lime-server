@@ -40,7 +40,7 @@ class SurveyResponse extends Model
             //code...
             Log::critical("Survey Response Model @ getDataAttribute" . $this->survey_id);
             $datas = json_decode($data, true);
-            $rawSurveyData = Survey::where('id', $this->survey_id)->firstOrFail();
+            $rawSurveyData = Survey::where('id', 8)->firstOrFail();
             $rawSurveyDataDecoded = json_decode($rawSurveyData->data, true);
             $datas = Helpers::resolveSurveyLabelInconsistencies($rawSurveyDataDecoded, $datas);
             $datas = Helpers::removeWidgetFromResponseIfNotInSurvey($rawSurveyDataDecoded, $datas);
